@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mobile-billing-ios</artifactId>
+    <packaging>xcode-lib</packaging>
+
+    <parent>
+        <groupId>com.funkypanda</groupId>
+        <artifactId>mobile-billing-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <build>
+        <sourceDirectory>src/xcode</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.sap.prd.mobile.ios.mios</groupId>
+                <artifactId>xcode-maven-plugin</artifactId>
+                <version>1.14.0</version>
+                <extensions>true</extensions>
+
+                <configuration>
+                    <configurations>
+                        <configuration>Debug</configuration>
+                        <configuration>Release</configuration>
+                    </configurations>
+                    <!-- If <configurations> are explicitly provided these propertyes have
+                    no effect. Can also be set via system property: ${xcode.app.defaultConfigurations} -->
+                    <defaultAppConfigurations>Release,Debug</defaultAppConfigurations>  
+                    <defaultLibConfigurations>Release,Debug</defaultLibConfigurations> 
+                    <sdks>
+                        <sdk>iphonesimulator</sdk>
+                        <sdk>iphoneos</sdk>
+                    </sdks>
+                    <!-- if <sdks> are explicitly provided this property has no effect.
+                    Can also be set via system property: ${xcode.app.defaultSdks} -->
+                    <defaultAppSdks>iphoneos,iphonesimulator</defaultAppSdks>  
+                    <defaultLibSdks>iphoneos,iphonesimulator</defaultLibSdks>  
+                    <buildActions>
+                        <buildAction>clean</buildAction>
+                        <buildAction>build</buildAction>
+                    </buildActions>
+					<!-- Can also be set via system property: ${xcode.target} -->
+                    <target>mobile-billing-ios</target>
+					<!-- Can also be set via system property: ${xcode.codeSignIdentity} -->
+                    <codeSignIdentity>FunkyPanda</codeSignIdentity>
+					<!-- Can also be set via system property: ${xcode.provisioningProfile} -->
+                    <provisioningProfile></provisioningProfile>
+					<!-- Can also be set via system property: ${xcode.appIdSuffix} -->
+                    <appIdSuffix>rinoaa-client</appIdSuffix>
+					<!-- Can also be set via system property: ${xcode.artifactIdSuffix} -->
+                    <artifactIdSuffix></artifactIdSuffix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

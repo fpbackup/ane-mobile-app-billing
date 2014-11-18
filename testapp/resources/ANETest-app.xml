@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/3.7">
+
+	<id>com.funkypanda.rinoa-client</id>
+	<filename>BillingANETest</filename>
+	<name>Purchase ANE Test</name>
+	<versionNumber>1.0.0</versionNumber>
+	<versionLabel>1.0.0</versionLabel>
+
+	<initialWindow>
+		<!-- The main SWF or HTML file of the application. Required. -->
+		<!-- Note: In Flash Builder, the SWF reference is set automatically. -->
+		<content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+        <renderMode>direct</renderMode>
+        <fullScreen>true</fullScreen>
+
+    	<autoOrients>true</autoOrients>
+        <visible>true</visible>
+    </initialWindow>
+
+    <iPhone>
+        <InfoAdditions><![CDATA[
+			<key>UIDeviceFamily</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+			</array>
+		]]></InfoAdditions>
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+    </iPhone>
+
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+            <manifest android:installLocation="auto">
+                <uses-permission android:name="android.permission.INTERNET" />
+                <uses-permission android:name="com.android.vending.BILLING" />
+
+                <application>
+                    <activity android:name="com.funkypanda.mobilebilling.activity.PurchaseActivity"
+                    android:label=""
+                    android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+                </application>
+
+            </manifest>
+        ]]>
+        </manifestAdditions>
+    </android>
+
+    <extensions>
+        <extensionID>com.funkypanda.mobile-billing</extensionID>
+    </extensions>
+
+</application>

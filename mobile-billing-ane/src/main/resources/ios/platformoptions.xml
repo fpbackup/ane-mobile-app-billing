@@ -1,0 +1,9 @@
+<platform xmlns="http://ns.adobe.com/air/extension/3.5">
+
+    <!-- The version of iOS SDK -->
+    <sdkVersion>6.0</sdkVersion>
+    <linkerOptions>
+        <option>-ios_version_min 6.0</option>
+        <option>-framework StoreKit</option>
+    </linkerOptions>
+</platform>

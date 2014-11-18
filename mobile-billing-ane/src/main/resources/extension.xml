@@ -1,0 +1,30 @@
+<extension xmlns="http://ns.adobe.com/air/extension/3.5">
+
+    <id>com.funkypanda.mobile-billing</id>
+
+    <versionNumber>0.0.1</versionNumber>
+
+    <platforms>
+        <platform name="iPhone-ARM">
+            <applicationDeployment>
+                <nativeLibrary>libInAppPurchase-iOS.a</nativeLibrary>
+                <initializer>InAppPurchaseInitializer</initializer>
+            </applicationDeployment>
+        </platform>
+        <platform name="iPhone-x86">
+            <applicationDeployment>
+                <nativeLibrary>libInAppPurchase-iOS.a</nativeLibrary>
+                <initializer>InAppPurchaseInitializer</initializer>
+            </applicationDeployment>
+        </platform>
+        <platform name="Android-ARM">
+            <applicationDeployment>
+                <nativeLibrary>libInAppPurchase-Android.jar</nativeLibrary>
+                <initializer>com.funkypanda.mobilebilling.Extension</initializer>
+            </applicationDeployment>
+        </platform>
+        <platform name="default">
+            <applicationDeployment/>
+        </platform>
+    </platforms>
+</extension>

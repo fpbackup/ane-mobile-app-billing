@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mobile-billing-flash</artifactId>
+    <packaging>swc</packaging>
+
+    <parent>
+        <groupId>com.funkypanda</groupId>
+        <artifactId>mobile-billing-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <properties>
+        <flex.version>4.12.1.20140427</flex.version>
+        <flexmojos.version>7.0.1</flexmojos.version>
+    </properties>
+
+    <build>
+        <sourceDirectory>src/main/actionscript</sourceDirectory>
+        <finalName>library</finalName>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>net.flexmojos.oss</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>${flexmojos.version}</version>
+                <extensions>true</extensions>
+
+                <configuration>
+                    <storepass>thisParamShouldNotBeNeeded</storepass>
+                    <keepAs3Metadatas>
+                        <name>Inject</name>
+                        <name>Embed</name>
+                        <name>Bindable</name>
+                        <name>ChangeEvent</name>
+                        <name>Managed</name>
+                        <name>NonCommittingChangeEvent</name>
+                        <name>PostConstruct</name>
+                        <name>PreDestroy</name>
+                        <name>Transient</name>
+                    </keepAs3Metadatas>
+                    <compilerWarnings>
+                        <warn-no-constructor>false</warn-no-constructor>
+                    </compilerWarnings>
+                    <coverage>false</coverage>
+                </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.flex</groupId>
+                        <artifactId>compiler</artifactId>
+                        <version>${flex.version}</version>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencies>
+	    <dependency>
+            <groupId>com.adobe.air.framework</groupId>
+            <artifactId>airglobal</artifactId>
+            <version>14.0</version>
+            <type>swc</type>
+        </dependency>
+		
+    </dependencies>
+
+</project>

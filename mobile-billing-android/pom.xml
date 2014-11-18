@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mobile-billing-android</artifactId>
+    <packaging>apk</packaging>
+
+    <parent>
+        <groupId>com.funkypanda</groupId>
+        <artifactId>mobile-billing-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <platform.version>2.3.3</platform.version>
+        <android.plugin.version>4.0.0-rc.1</android.plugin.version>
+        <android.sdk.path>C:\Program Files (x86)\Android\android-sdk</android.sdk.path>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>${platform.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- This was taken from Air SDK 14.0 -->
+        <dependency>
+            <groupId>com.adobe</groupId>
+            <artifactId>FlashRuntimeExtensions</artifactId>
+            <version>14.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <finalName>lib-billing-android</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <aidlSourceDirectory>${project.basedir}/src/main/aidl</aidlSourceDirectory>
+                   <!--<androidManifestFile>${project.basedir}/src/main/AndroidManifest.xml</androidManifestFile>-->
+                    <resourceDirectory>${project.basedir}/src/main/res</resourceDirectory>
+                    <assetsDirectory>${project.basedir}/src/main/assets</assetsDirectory>
+                    <sdk>
+                        <platform>10</platform>
+                    </sdk>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
