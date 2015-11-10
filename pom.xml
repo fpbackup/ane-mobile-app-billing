@@ -16,8 +16,8 @@
 
     <modules>
         <module>mobile-billing-flash</module>
-        <module>mobile-billing-android</module>
-        <!--<module>mobile-billing-ios</module>-->
+        <!--<module>mobile-billing-android</module>-->
+        <module>mobile-billing-ios</module>
         <module>mobile-billing-ane</module>
     </modules>
 
@@ -25,7 +25,7 @@
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <air.version>14.0</air.version>
+        <air.version>19.0</air.version>
         <yelbota.adt.plugin.version>1.0.8</yelbota.adt.plugin.version>
     </properties>
 
