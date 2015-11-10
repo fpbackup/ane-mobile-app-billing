@@ -105,13 +105,13 @@
                         <platform>
                             <name>iPhone-ARM</name>
                             <directory>src/main/resources/ios</directory>
-                            <options>src/main/resources/ios/platformoptions.xml</options>
+                            <options>src/main/resources/ios/billingANEPlatformOptions.xml</options>
                             <extractLibrarySwf>true</extractLibrarySwf>
                         </platform>
                         <platform>
                             <name>iPhone-x86</name>
                             <directory>src/main/resources/ios</directory>
-                            <options>src/main/resources/ios/platformoptions.xml</options>
+                            <options>src/main/resources/ios/billingANEPlatformOptions.xml</options>
                             <extractLibrarySwf>true</extractLibrarySwf>
                         </platform>
                         <platform>
