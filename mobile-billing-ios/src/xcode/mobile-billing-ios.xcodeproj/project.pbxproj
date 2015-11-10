@@ -12,21 +12,7 @@
 		25DF04E619C1BD6A0088EBB3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25DF04E519C1BD6A0088EBB3 /* Foundation.framework */; };
 		25DF04EB19C1BD6A0088EBB3 /* InAppPurchase_iOS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 25DF04EA19C1BD6A0088EBB3 /* InAppPurchase_iOS.h */; };
 		25DF04ED19C1BD6A0088EBB3 /* InAppPurchase_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DF04EC19C1BD6A0088EBB3 /* InAppPurchase_iOS.m */; };
-		25DF04F419C1BD6A0088EBB3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25DF04F319C1BD6A0088EBB3 /* XCTest.framework */; };
-		25DF04F519C1BD6A0088EBB3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25DF04E519C1BD6A0088EBB3 /* Foundation.framework */; };
-		25DF04F719C1BD6A0088EBB3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25DF04F619C1BD6A0088EBB3 /* UIKit.framework */; };
-		25DF04FA19C1BD6A0088EBB3 /* libInAppPurchase-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25DF04E219C1BD6A0088EBB3 /* libInAppPurchase-iOS.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		25DF04F819C1BD6A0088EBB3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 25DF04DA19C1BD6A0088EBB3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 25DF04E119C1BD6A0088EBB3;
-			remoteInfo = "InAppPurchase-iOS";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		25DF04E019C1BD6A0088EBB3 /* CopyFiles */ = {
@@ -48,12 +34,10 @@
 		25BDD9FD19C9C7D000B49BA0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		25BDDA2719C9DDE000B49BA0 /* PaymentUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentUtils.h; sourceTree = "<group>"; };
 		25BDDA2819C9DDE000B49BA0 /* PaymentUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentUtils.m; sourceTree = "<group>"; };
-		25DF04E219C1BD6A0088EBB3 /* libInAppPurchase-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libInAppPurchase-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25DF04E219C1BD6A0088EBB3 /* libmobile-billing-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libmobile-billing-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		25DF04E519C1BD6A0088EBB3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		25DF04E919C1BD6A0088EBB3 /* InAppPurchase-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InAppPurchase-iOS-Prefix.pch"; sourceTree = "<group>"; };
 		25DF04EA19C1BD6A0088EBB3 /* InAppPurchase_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InAppPurchase_iOS.h; sourceTree = "<group>"; };
 		25DF04EC19C1BD6A0088EBB3 /* InAppPurchase_iOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase_iOS.m; sourceTree = "<group>"; };
-		25DF04F219C1BD6A0088EBB3 /* InAppPurchase-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "InAppPurchase-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		25DF04F319C1BD6A0088EBB3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		25DF04F619C1BD6A0088EBB3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -67,24 +51,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		25DF04EF19C1BD6A0088EBB3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				25DF04F419C1BD6A0088EBB3 /* XCTest.framework in Frameworks */,
-				25DF04F719C1BD6A0088EBB3 /* UIKit.framework in Frameworks */,
-				25DF04F519C1BD6A0088EBB3 /* Foundation.framework in Frameworks */,
-				25DF04FA19C1BD6A0088EBB3 /* libInAppPurchase-iOS.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		25DF04D919C1BD6A0088EBB3 = {
 			isa = PBXGroup;
 			children = (
-				25DF04E719C1BD6A0088EBB3 /* InAppPurchase-iOS */,
+				25DF04E719C1BD6A0088EBB3 /* mobile-billing-ios */,
 				25DF04E419C1BD6A0088EBB3 /* Frameworks */,
 				25DF04E319C1BD6A0088EBB3 /* Products */,
 			);
@@ -93,8 +66,7 @@
 		25DF04E319C1BD6A0088EBB3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				25DF04E219C1BD6A0088EBB3 /* libInAppPurchase-iOS.a */,
-				25DF04F219C1BD6A0088EBB3 /* InAppPurchase-iOSTests.xctest */,
+				25DF04E219C1BD6A0088EBB3 /* libmobile-billing-ios.a */,
 				25BDD9FB19C9C7D000B49BA0 /* ANETest.app */,
 			);
 			name = Products;
@@ -111,7 +83,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		25DF04E719C1BD6A0088EBB3 /* InAppPurchase-iOS */ = {
+		25DF04E719C1BD6A0088EBB3 /* mobile-billing-ios */ = {
 			isa = PBXGroup;
 			children = (
 				25DF04EA19C1BD6A0088EBB3 /* InAppPurchase_iOS.h */,
@@ -121,13 +93,13 @@
 				25BDDA2819C9DDE000B49BA0 /* PaymentUtils.m */,
 				25DF04E819C1BD6A0088EBB3 /* Supporting Files */,
 			);
+			name = "mobile-billing-ios";
 			path = "InAppPurchase-iOS";
 			sourceTree = "<group>";
 		};
 		25DF04E819C1BD6A0088EBB3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				25DF04E919C1BD6A0088EBB3 /* InAppPurchase-iOS-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -150,9 +122,9 @@
 			productReference = 25BDD9FB19C9C7D000B49BA0 /* ANETest.app */;
 			productType = "com.apple.product-type.application";
 		};
-		25DF04E119C1BD6A0088EBB3 /* InAppPurchase-iOS */ = {
+		25DF04E119C1BD6A0088EBB3 /* mobile-billing-ios */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 25DF050519C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "InAppPurchase-iOS" */;
+			buildConfigurationList = 25DF050519C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "mobile-billing-ios" */;
 			buildPhases = (
 				25DF04DE19C1BD6A0088EBB3 /* Sources */,
 				25DF04DF19C1BD6A0088EBB3 /* Frameworks */,
@@ -162,28 +134,10 @@
 			);
 			dependencies = (
 			);
-			name = "InAppPurchase-iOS";
+			name = "mobile-billing-ios";
 			productName = "InAppPurchase-iOS";
-			productReference = 25DF04E219C1BD6A0088EBB3 /* libInAppPurchase-iOS.a */;
+			productReference = 25DF04E219C1BD6A0088EBB3 /* libmobile-billing-ios.a */;
 			productType = "com.apple.product-type.library.static";
-		};
-		25DF04F119C1BD6A0088EBB3 /* InAppPurchase-iOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 25DF050819C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "InAppPurchase-iOSTests" */;
-			buildPhases = (
-				25DF04EE19C1BD6A0088EBB3 /* Sources */,
-				25DF04EF19C1BD6A0088EBB3 /* Frameworks */,
-				25DF04F019C1BD6A0088EBB3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				25DF04F919C1BD6A0088EBB3 /* PBXTargetDependency */,
-			);
-			name = "InAppPurchase-iOSTests";
-			productName = "InAppPurchase-iOSTests";
-			productReference = 25DF04F219C1BD6A0088EBB3 /* InAppPurchase-iOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -191,18 +145,15 @@
 		25DF04DA19C1BD6A0088EBB3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = "FunkyPanda";
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = FunkyPanda;
 				TargetAttributes = {
 					25BDD9FA19C9C7D000B49BA0 = {
 						DevelopmentTeam = 2SA3QXQJ9F;
 					};
-					25DF04F119C1BD6A0088EBB3 = {
-						TestTargetID = 25BDD9FA19C9C7D000B49BA0;
-					};
 				};
 			};
-			buildConfigurationList = 25DF04DD19C1BD6A0088EBB3 /* Build configuration list for PBXProject "InAppPurchase-iOS" */;
+			buildConfigurationList = 25DF04DD19C1BD6A0088EBB3 /* Build configuration list for PBXProject "mobile-billing-ios" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -214,22 +165,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				25DF04E119C1BD6A0088EBB3 /* InAppPurchase-iOS */,
-				25DF04F119C1BD6A0088EBB3 /* InAppPurchase-iOSTests */,
+				25DF04E119C1BD6A0088EBB3 /* mobile-billing-ios */,
 				25BDD9FA19C9C7D000B49BA0 /* testPaymentANEApp */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		25DF04F019C1BD6A0088EBB3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		25BDDA2619C9C9E400B49BA0 /* ShellScript */ = {
@@ -257,22 +197,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		25DF04EE19C1BD6A0088EBB3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		25DF04F919C1BD6A0088EBB3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 25DF04E119C1BD6A0088EBB3 /* InAppPurchase-iOS */;
-			targetProxy = 25DF04F819C1BD6A0088EBB3 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		25BDDA2019C9C7D100B49BA0 /* Debug */ = {
@@ -287,8 +212,8 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "testPaymentANEApp/testPaymentANEApp-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -315,8 +240,8 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "testPaymentANEApp/testPaymentANEApp-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "testPaymentANEApp/testPaymentANEApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = ANETest;
@@ -343,9 +268,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -359,7 +286,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				SDKROOT = iphoneos9.1;
 			};
 			name = Debug;
 		};
@@ -382,6 +310,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -389,7 +318,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				SDKROOT = iphoneos;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				SDKROOT = iphoneos9.1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -398,8 +328,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/InAppPurchase_iOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InAppPurchase-iOS/InAppPurchase-iOS-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -412,53 +342,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/InAppPurchase_iOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InAppPurchase-iOS/InAppPurchase-iOS-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		25DF050919C1BD6A0088EBB3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/testPaymentANEApp.app/testPaymentANEApp";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InAppPurchase-iOS/InAppPurchase-iOS-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "InAppPurchase-iOSTests/InAppPurchase-iOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		25DF050A19C1BD6A0088EBB3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/testPaymentANEApp.app/testPaymentANEApp";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InAppPurchase-iOS/InAppPurchase-iOS-Prefix.pch";
-				INFOPLIST_FILE = "InAppPurchase-iOSTests/InAppPurchase-iOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -474,7 +364,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		25DF04DD19C1BD6A0088EBB3 /* Build configuration list for PBXProject "InAppPurchase-iOS" */ = {
+		25DF04DD19C1BD6A0088EBB3 /* Build configuration list for PBXProject "mobile-billing-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25DF050319C1BD6A0088EBB3 /* Debug */,
@@ -483,20 +373,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		25DF050519C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "InAppPurchase-iOS" */ = {
+		25DF050519C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "mobile-billing-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				25DF050619C1BD6A0088EBB3 /* Debug */,
 				25DF050719C1BD6A0088EBB3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		25DF050819C1BD6A0088EBB3 /* Build configuration list for PBXNativeTarget "InAppPurchase-iOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				25DF050919C1BD6A0088EBB3 /* Debug */,
-				25DF050A19C1BD6A0088EBB3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
