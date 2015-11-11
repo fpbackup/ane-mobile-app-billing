@@ -4,7 +4,6 @@ package com.funkypanda.mobilebilling
     import com.funkypanda.mobilebilling.events.CanMakePurchaseEvent;
     import com.funkypanda.mobilebilling.events.ConsumePurchaseErrorEvent;
     import com.funkypanda.mobilebilling.events.ConsumePurchaseSuccessEvent;
-    import com.funkypanda.mobilebilling.events.GetPurchasedItemsErrorEvent;
     import com.funkypanda.mobilebilling.events.GetPurchasedItemsSuccessEvent;
     import com.funkypanda.mobilebilling.events.PurchaseDebugEvent;
     import com.funkypanda.mobilebilling.events.MakePurchaseErrorEvent;
@@ -140,7 +139,7 @@ package com.funkypanda.mobilebilling
          *  that the user has a pro version of your app) or consume thus the user can buy it again (for example the user
          *  buys extra gold, and after purchase you increase his balance on the server).
          *  Params:
-         *  receipt String that is held by a Purchase object's transactionReceipt field.
+         *  transactionId String that is held by a Purchase object's transactionId field.
          *          Purchase objects are sent back as the response to makePurchase() and getPurchasedItems().
          *  Events dispatched as a reply:
          *  ConsumePurchaseSuccessEvent, ConsumePurchaseErrorEvent
@@ -157,10 +156,10 @@ package com.funkypanda.mobilebilling
             }
         }
 
-        /** Returns items that have been purchased, but not consumed. (this is called by Apple restoring purchases)
+        /** Returns receipts for items that have been purchased, but not consumed. (this is called by Apple restoring purchaseReceipts)
          *  You should call this on every app startup to ensure that the user's inventory is in sync.
          *  Events dispatched as reply:
-         *  GetPurchasedItemsSuccessEvent, GetPurchasedItemsErrorEvent
+         *  GetPurchasedItemsSuccessEvent
          **/
         public function getPurchasedItems() : void
         {
@@ -194,16 +193,7 @@ package com.funkypanda.mobilebilling
                     break;
                 // getPurchasedItems() replies
                 case GetPurchasedItemsSuccessEvent.GET_PURCHASED_ITEMS_SUCCESS:
-                    const res : Object = JSON.parse(event.level);
-                    const purchasesArr : Vector.<Purchase> = new Vector.<Purchase>();
-                    for each (var purchaseObj : Object in res)
-                    {
-                        purchasesArr.push(createPurchase(purchaseObj));
-                    }
-                    dispatchEvent(new GetPurchasedItemsSuccessEvent(purchasesArr));
-                    break;
-                case GetPurchasedItemsErrorEvent.GET_PURCHASED_ITEMS_ERROR:
-                    dispatchEvent(new GetPurchasedItemsErrorEvent(event.level));
+                    dispatchEvent(new GetPurchasedItemsSuccessEvent(event.level));
                     break;
                 // getCanMakeAPurchase() replies
                 case CanMakePurchaseEvent.CAN_MAKE_PURCHASE:
@@ -268,7 +258,7 @@ package com.funkypanda.mobilebilling
             date.time = purchaseObject.transactionDate;
             purchase.transactionDate = date;
             purchase.transactionId = purchaseObject.transactionId;
-            purchase.transactionReceipt = purchaseObject.transactionReceipt;
+            purchase.receipt = purchaseObject.receipt;
             return purchase;
         }
 

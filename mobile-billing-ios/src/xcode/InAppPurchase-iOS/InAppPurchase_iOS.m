@@ -8,8 +8,6 @@ NSArray * avaiableProducts = nil;
 
 BOOL hasTransactionObserver = NO;
 
-BOOL isPurchasedItemsQuery = NO;
-
 @implementation InAppPurchase_iOS
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +210,6 @@ FREObject getProductsInfo(FREContext context, void* functionData, uint32_t argc,
 
 FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
 {
-    isPurchasedItemsQuery = NO;
     uint32_t stringLength;
     const uint8_t *string1;
     
@@ -262,74 +259,9 @@ FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FR
 // Processes payment events. does NOT consume the payment except if the payment failed.
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
-    if (isPurchasedItemsQuery == YES)
-    {
-        return;
-    }
     [self logDebug:[NSString stringWithFormat:@"Payment queue with %lu items updated.", (unsigned long)transactions.count]];
     
-    NSDictionary *result = [self processPaymentQueue:transactions];
-    
-    NSArray *successfullPurchases = [result valueForKey:@"successfullTransactions"];
-    if (successfullPurchases.count > 0)
-    {
-         FREDispatchStatusEventAsync(AirContext , (uint8_t*)"MAKE_PURCHASE_SUCCESS", (uint8_t*)[[self dataToJSON:successfullPurchases] UTF8String] );
-    }
-    
-    NSArray *errors = [result valueForKey:@"errors"];
-    for (NSString *errorStr in errors)
-    {
-        FREDispatchStatusEventAsync(AirContext , (uint8_t*)"MAKE_PURCHASE_ERROR", (uint8_t*)[errorStr UTF8String] );
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////
-// GET PURCHASED ITEMS
-//////////////////////////////////////////////////////////////////////////////////////
-
-FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
-{
-    isPurchasedItemsQuery = YES;
-    // We must add an observer otherwise the calls to tue queue do nothing.
-    [(InAppPurchase_iOS*)SelfReference addPaymentQueueObserverIfNeeded];
-    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
-    return nil;
-}
-
-// Sent when an error is encountered while adding transactions from the user's purchase history back to the queue.
-- (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error
-{
-    NSString * err = [NSString stringWithFormat:@"error code: %@ description: %@ reason: %@ recovery suggestion: %@", [PaymentUtils errorStateToString: error.code], error.localizedDescription, error.localizedFailureReason, error.localizedRecoverySuggestion];
-    
-    FREDispatchStatusEventAsync(AirContext, (uint8_t*)"GET_PURCHASED_ITEMS_ERROR", (uint8_t*)[err UTF8String]);
-}
-
-// Sent when all transactions from the user's purchase history have successfully been added back to the queue.
-- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
-{
-    NSDictionary *result = [self processPaymentQueue:queue.transactions];
-    NSArray *errors = [result valueForKey:@"errors"];
-    for (NSString *errorStr in errors)
-    {
-        FREDispatchStatusEventAsync(AirContext , (uint8_t*)"GET_PURCHASED_ITEMS_ERROR", (uint8_t*)[errorStr UTF8String] );
-    }
-    
-    if (errors.count == 0)
-    {
-        NSArray *successfullPurchases = [result valueForKey:@"successfullTransactions"];
-        FREDispatchStatusEventAsync(AirContext , (uint8_t*)"GET_PURCHASED_ITEMS_SUCCESS", (uint8_t*)[[self dataToJSON:successfullPurchases] UTF8String]);
-    }
-    [self logDebug: [NSString stringWithFormat:@"payment queue: get purchased items (restoreCompletedTransactions) finished."]];
-}
-
-//////////////////////////////////////////////////////////////////////////////////////
-// PAYMENT QUEUE HELPERS
-//////////////////////////////////////////////////////////////////////////////////////
--(NSMutableDictionary *)processPaymentQueue:(NSArray *)transactions
-{
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    
-    NSMutableArray *transactionsArr = [[NSMutableArray alloc] init];
+    NSMutableArray *successfulPaymentsArr = [[NSMutableArray alloc] init];
     NSMutableArray *errorArr = [[NSMutableArray alloc] init];
     for (SKPaymentTransaction *transaction in transactions)
     {
@@ -356,7 +288,7 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
         {
             // the queue contains duplicates if one tried to purchase the same item multiple times without consuming them
             BOOL isDuplicate = NO;
-            for (NSDictionary *existingTransaction in transactionsArr)
+            for (NSDictionary *existingTransaction in successfulPaymentsArr)
             {
                 if ([[existingTransaction valueForKey:@"transactionId"] isEqualToString:transaction.transactionIdentifier])
                 {
@@ -366,15 +298,36 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
             if (isDuplicate == NO)
             {
                 NSDictionary* transactionDict = [PaymentUtils transactionToDictionary:transaction];
-                [transactionsArr addObject:transactionDict];
+                
+                NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[receiptUrl path]])
+                {
+                    NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
+                    NSString *receiptStr = [receiptData base64EncodedStringWithOptions:0];
+                    [transactionDict setValue:receiptStr forKey:@"receipt"];
+                }
+                else
+                {
+                    // TODO handle this case!
+                    [self logDebug:[NSString stringWithFormat:@"ERROR  Payment has no receipt!"]];
+                }
+                [successfulPaymentsArr addObject:transactionDict];
             }
         }
     }
-    [dict setValue:transactionsArr forKey:@"successfullTransactions"];
-    [dict setValue:errorArr forKey:@"errors"];
-    return dict;
+    
+    
+    if (successfulPaymentsArr.count > 0)
+    {
+        FREDispatchStatusEventAsync(AirContext , (uint8_t*)"MAKE_PURCHASE_SUCCESS", (uint8_t*)[[self dataToJSON:successfulPaymentsArr] UTF8String] );
+    }
+    
+    for (NSString *errorStr in errorArr)
+    {
+        FREDispatchStatusEventAsync(AirContext , (uint8_t*)"MAKE_PURCHASE_ERROR", (uint8_t*)[errorStr UTF8String] );
+    }
 }
-
 
 -(NSString *)createPurchaseError:(NSString *) errorStr message:(NSString *) messageStr
 {
@@ -382,6 +335,30 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
     [dictionary setValue:errorStr forKey:@"error"];
     [dictionary setValue:messageStr forKey:@"message"];
     return [self dataToJSON:dictionary];
+}
+//////////////////////////////////////////////////////////////////////////////////////
+// GET PURCHASED ITEMS
+//////////////////////////////////////////////////////////////////////////////////////
+
+FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
+{
+    NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[receiptUrl path]])
+    {
+        NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
+        
+        NSString *receiptStr = [receiptData base64EncodedStringWithOptions:0];
+        
+        [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"Found receipts: %@", receiptStr]];
+        
+        FREDispatchStatusEventAsync(context , (uint8_t*)"GET_PURCHASED_ITEMS_SUCCESS", (uint8_t*)[receiptStr UTF8String]);
+    }
+    else
+    {
+        FREDispatchStatusEventAsync(context, (uint8_t*) "GET_PURCHASED_ITEMS_SUCCESS", (uint8_t*)"");
+    }
+    return nil;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -391,22 +368,21 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
 // Consumes the transaction if it receives the proper ID and transaction state is purchased or restored.
 FREObject consumeTransaction(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
 {
-    isPurchasedItemsQuery = NO;
     uint32_t stringLength;
-    const uint8_t *productReceiptFromFlash;
-    if (FREGetObjectAsUTF8(argv[0], &stringLength, &productReceiptFromFlash) != FRE_OK)
+    const uint8_t *transactionIdFromFlash;
+    if (FREGetObjectAsUTF8(argv[0], &stringLength, &transactionIdFromFlash) != FRE_OK)
     {
         FREDispatchStatusEventAsync(context ,(uint8_t*)"CONSUME_PURCHASE_ERROR", (uint8_t*)"Bad input parameter");
         return nil;
     }
-    NSString *productReceipt = [NSString stringWithUTF8String:(char*)productReceiptFromFlash];
+    NSString *transactionId = [NSString stringWithUTF8String:(char*)transactionIdFromFlash];
     
     NSArray* transactions = [[SKPaymentQueue defaultQueue] transactions];
     
     SKPaymentTransaction* currentTransaction = nil;
     for (SKPaymentTransaction* transaction in transactions)
     {
-        if ([[[transaction transactionReceipt] base64EncodedStringWithOptions:0] isEqualToString:productReceipt])
+        if ([[transaction transactionIdentifier] isEqualToString:transactionId])
         {
             currentTransaction = transaction;
             break;

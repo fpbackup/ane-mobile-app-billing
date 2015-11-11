@@ -12,10 +12,6 @@
         [dictionary setValue:[@(floor([transaction.transactionDate timeIntervalSince1970] * 1000)) stringValue] forKey:@"transactionDate"];
         [dictionary setValue:transaction.transactionIdentifier forKey:@"transactionId"];
     }
-    if (transaction.transactionState == SKPaymentTransactionStatePurchased)
-    {
-        [dictionary setValue:[transaction.transactionReceipt base64EncodedStringWithOptions:0] forKey:@"transactionReceipt"];
-    }
     return dictionary;
 }
 
@@ -72,5 +68,4 @@
     }
     return result;
 }
-
 @end

@@ -1,6 +1,5 @@
 package com.funkypanda.mobilebilling.events
 {
-    import com.funkypanda.mobilebilling.models.Purchase;
 
     import flash.events.Event;
 
@@ -9,16 +8,16 @@ package com.funkypanda.mobilebilling.events
 
         public static const GET_PURCHASED_ITEMS_SUCCESS : String = "GET_PURCHASED_ITEMS_SUCCESS";
 
-        public function GetPurchasedItemsSuccessEvent(purchases : Vector.<Purchase>)
+        public function GetPurchasedItemsSuccessEvent(purchaseReceipts : String)
         {
             super(GET_PURCHASED_ITEMS_SUCCESS);
-            _purchases = purchases;
+            _purchaseReceipts = purchaseReceipts;
         }
-        private var _purchases : Vector.<Purchase>;
+        private var _purchaseReceipts : String;
 
-        public function get purchases() : Vector.<Purchase>
+        public function get purchaseReceipts() : String
         {
-            return _purchases;
+            return _purchaseReceipts;
         }
     }
 }
