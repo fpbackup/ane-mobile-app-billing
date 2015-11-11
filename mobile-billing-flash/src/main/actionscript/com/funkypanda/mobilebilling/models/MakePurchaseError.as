@@ -6,6 +6,7 @@ package com.funkypanda.mobilebilling.models
 
         public static const PURCHASE_ERROR_OTHER : MakePurchaseError = new MakePurchaseError("PURCHASE_ERROR_OTHER");
         public static const PURCHASE_ERROR_CANCELLED : MakePurchaseError = new MakePurchaseError("PURCHASE_ERROR_CANCELLED");
+        public static const MAKE_PURCHASE_ERROR_NEEDS_REFRESH : MakePurchaseError = new MakePurchaseError("MAKE_PURCHASE_ERROR_NEEDS_REFRESH");
 
         public function MakePurchaseError(state : String)
         {
@@ -24,6 +25,10 @@ package com.funkypanda.mobilebilling.models
             if (str == PURCHASE_ERROR_CANCELLED.toString())
             {
                 return MakePurchaseError.PURCHASE_ERROR_CANCELLED;
+            }
+            else if (str == MAKE_PURCHASE_ERROR_NEEDS_REFRESH.toString())
+            {
+                return MakePurchaseError.MAKE_PURCHASE_ERROR_NEEDS_REFRESH;
             }
             return MakePurchaseError.PURCHASE_ERROR_OTHER;
         }

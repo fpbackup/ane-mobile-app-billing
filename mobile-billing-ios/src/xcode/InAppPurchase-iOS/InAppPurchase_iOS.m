@@ -296,8 +296,8 @@ FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FR
             }
             if (isDuplicate == NO)
             {
+                // This solution sends the same receipt for every successfull purchase!
                 NSDictionary* transactionDict = [PaymentUtils transactionToDictionary:transaction];
-                
                 NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
                 
                 if ([[NSFileManager defaultManager] fileExistsAtPath:[receiptUrl path]])
@@ -308,7 +308,8 @@ FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FR
                 }
                 else
                 {
-                    // TODO handle this case!
+                    NSString *fullError = [self createPurchaseError:@"MAKE_PURCHASE_ERROR_NEEDS_REFRESH" message:[NSString stringWithFormat:@"Transaction with ID: %@ is finished but there is no receipt.", [transaction transactionIdentifier]]];
+                    [errorArr addObject:fullError];
                     [self logDebug:[NSString stringWithFormat:@"ERROR  Payment has no receipt!"]];
                 }
                 [successfulPaymentsArr addObject:transactionDict];
