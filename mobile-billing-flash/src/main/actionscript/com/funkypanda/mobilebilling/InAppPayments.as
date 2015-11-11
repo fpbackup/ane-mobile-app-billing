@@ -10,7 +10,9 @@ package com.funkypanda.mobilebilling
     import com.funkypanda.mobilebilling.events.GetProductInfoErrorEvent;
     import com.funkypanda.mobilebilling.events.GetProductInfoSuccessEvent;
     import com.funkypanda.mobilebilling.events.MakePurchaseSuccessEvent;
-    import com.funkypanda.mobilebilling.models.Product;
+import com.funkypanda.mobilebilling.events.RefreshReceiptErrorEvent;
+import com.funkypanda.mobilebilling.events.RefreshReceiptSuccessEvent;
+import com.funkypanda.mobilebilling.models.Product;
     import com.funkypanda.mobilebilling.models.Purchase;
     import com.funkypanda.mobilebilling.models.MakePurchaseError;
 
@@ -166,6 +168,15 @@ package com.funkypanda.mobilebilling
             _extContext.call("getPurchasedItems");
         }
 
+        /** Refreshes the receipt on the disk.
+         *  Events dispatched as reply:
+         *  RefreshReceiptSuccessEvent, RefreshReceiptErrorEvent
+         **/
+        public function refreshReceipt() : void
+        {
+            _extContext.call("refreshReceipt");
+        }
+
         /** Call this if you do not plan to use the extension anymore. (should not happen) */
         public function dispose() : void
         {
@@ -221,6 +232,13 @@ package com.funkypanda.mobilebilling
                     break;
                 case ConsumePurchaseErrorEvent.CONSUME_PURCHASE_ERROR:
                     dispatchEvent(new ConsumePurchaseErrorEvent(event.level));
+                    break;
+                // refreshReceipt() replies
+                case RefreshReceiptSuccessEvent.REFRESH_RECEIPT_SUCCESS:
+                    dispatchEvent(new RefreshReceiptSuccessEvent(event.level));
+                    break;
+                case RefreshReceiptErrorEvent.REFRESH_RECEIPT_ERROR:
+                    dispatchEvent(new RefreshReceiptErrorEvent(event.level));
                     break;
                 default:
                     dispatchEvent(new PurchaseDebugEvent("Unknown event type received from the ANE. Data: " + event.level));

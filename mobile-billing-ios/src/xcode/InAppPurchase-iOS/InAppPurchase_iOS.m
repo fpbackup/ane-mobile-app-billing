@@ -27,7 +27,7 @@ BOOL hasTransactionObserver = NO;
 // this is called when the extension context is created.
 void InAppPurchaseContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 5;
+    *numFunctionsToTest = 6;
     
     FRENamedFunction* func = (FRENamedFunction*) malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
@@ -50,6 +50,11 @@ void InAppPurchaseContextInitializer(void* extData, const uint8_t* ctxType, FREC
     func[4].name = (const uint8_t*) "getPurchasedItems";
     func[4].functionData = NULL;
     func[4].function = &getPurchasedItems;
+    
+    func[5].name = (const uint8_t*) "refreshReceipt";
+    func[5].functionData = NULL;
+    func[5].function = &refreshReceipt;
+    
     
     *functionsToSet = func;
     
@@ -188,12 +193,6 @@ FREObject getProductsInfo(FREContext context, void* functionData, uint32_t argc,
         NSString* errorString = [self dataToJSON:[response invalidProductIdentifiers]];
         [self logDebug:[NSString stringWithFormat:@"WARNING: tried to query invalid product IDs %@", errorString]];
     }
-}
-
-// on product info finish
-- (void)requestDidFinish:(SKRequest *)request
-{
-    [self logDebug:[NSString stringWithFormat:@"Request finished: %@", request.class]];
 }
 
 // on product info error
@@ -347,11 +346,8 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
     if ([[NSFileManager defaultManager] fileExistsAtPath:[receiptUrl path]])
     {
         NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
-        
         NSString *receiptStr = [receiptData base64EncodedStringWithOptions:0];
-        
-        [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"Found receipts: %@", receiptStr]];
-        
+        [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"Found receipts"]];
         FREDispatchStatusEventAsync(context , (uint8_t*)"GET_PURCHASED_ITEMS_SUCCESS", (uint8_t*)[receiptStr UTF8String]);
     }
     else
@@ -411,6 +407,39 @@ FREObject consumeTransaction(FREContext context, void* functionData, uint32_t ar
     return nil;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+// REFRESH RECEIPT
+//////////////////////////////////////////////////////////////////////////////////////
+
+FREObject refreshReceipt(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
+{
+    SKReceiptRefreshRequest *refreshReceiptRequest = [[SKReceiptRefreshRequest alloc] initWithReceiptProperties:@{}];
+    refreshReceiptRequest.delegate = SelfReference;
+    [refreshReceiptRequest start];
+    return nil;
+}
+
+// on product info finish
+- (void)requestDidFinish:(SKRequest *)request
+{
+    [self logDebug:[NSString stringWithFormat:@"Request finished: %@", request.class]];
+    if([request isKindOfClass:[SKReceiptRefreshRequest class]])
+    {
+        NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[receiptUrl path]])
+        {
+            NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
+            NSString *receiptStr = [receiptData base64EncodedStringWithOptions:0];
+            FREDispatchStatusEventAsync(AirContext , (uint8_t*)"REFRESH_RECEIPT_SUCCESS", (uint8_t*)[receiptStr UTF8String] );
+        } else
+        {
+            NSLog(@"Receipt request done but there is no receipt. This is likely because the user canceled at the login screen");
+            // This can happen if the user cancels the login screen for the store.
+            // If we get here it means there is no receipt and an attempt to get it failed because the user cancelled the login.
+            FREDispatchStatusEventAsync(AirContext , (uint8_t*)"REFRESH_RECEIPT_ERROR", (uint8_t*)"receipt file not found." );
+        }
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 // DESTRUCTOR
