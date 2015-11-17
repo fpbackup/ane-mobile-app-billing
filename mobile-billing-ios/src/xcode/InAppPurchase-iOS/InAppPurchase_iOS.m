@@ -136,8 +136,6 @@ FREObject getProductsInfo(FREContext context, void* functionData, uint32_t argc,
         [productsIdentifiers addObject:productIdentifier];
     }
     
-    //[(InAppPurchase_iOS*)SelfRererence logDebug: [(InAppPurchase_iOS*)SelfRererence dataToJSON:productsIdentifiers]];
-    
     SKProductsRequest* request = [[SKProductsRequest alloc] initWithProductIdentifiers:productsIdentifiers];
     
     [(InAppPurchase_iOS*)SelfReference sendRequest:request AndContext:context];
@@ -219,8 +217,9 @@ FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FR
         return nil;
     }
     
-    NSString *productIdentifier = [NSString stringWithUTF8String:(char*)string1];
+    [(InAppPurchase_iOS*)SelfReference addPaymentQueueObserverIfNeeded];
     
+    NSString *productIdentifier = [NSString stringWithUTF8String:(char*)string1];
     if (avaiableProducts == nil || avaiableProducts.count == 0)
     {
         NSString *err = [(InAppPurchase_iOS*)SelfReference createPurchaseError:@"PURCHASE_ERROR_OTHER" message:@"No available products to buy or getProductsInfo was not called"];
@@ -246,7 +245,6 @@ FREObject makePurchase(FREContext context, void* functionData, uint32_t argc, FR
     
     SKPayment* payment = [SKPayment paymentWithProduct:productToBuy];
     
-    [(InAppPurchase_iOS*)SelfReference addPaymentQueueObserverIfNeeded];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
     
     [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"Making purchase for ID: %@", [payment productIdentifier]]];
@@ -348,7 +346,7 @@ FREObject getPurchasedItems(FREContext context, void* functionData, uint32_t arg
     {
         NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
         NSString *receiptStr = [receiptData base64EncodedStringWithOptions:0];
-        [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"Found receipts"]];
+        [(InAppPurchase_iOS*)SelfReference logDebug: [NSString stringWithFormat:@"getPurchasedItems: Found receipts"]];
         FREDispatchStatusEventAsync(context , (uint8_t*)"GET_PURCHASED_ITEMS_SUCCESS", (uint8_t*)[receiptStr UTF8String]);
     }
     else
@@ -402,7 +400,7 @@ FREObject consumeTransaction(FREContext context, void* functionData, uint32_t ar
     }
     else
     {
-        NSString* errorStr = [NSString stringWithFormat: @"Product payment state is %@, should be PURCHASED or RESTORED", [PaymentUtils transactionStateToString: currentTransaction.transactionState]];
+        NSString* errorStr = [NSString stringWithFormat: @"Product payment state is %@, but should be PURCHASED or RESTORED", [PaymentUtils transactionStateToString: currentTransaction.transactionState]];
         FREDispatchStatusEventAsync(context, (uint8_t*)"CONSUME_PURCHASE_ERROR", (uint8_t*)[errorStr UTF8String]);
     }
     return nil;
@@ -434,10 +432,9 @@ FREObject refreshReceipt(FREContext context, void* functionData, uint32_t argc, 
             FREDispatchStatusEventAsync(AirContext , (uint8_t*)"REFRESH_RECEIPT_SUCCESS", (uint8_t*)[receiptStr UTF8String] );
         } else
         {
-            NSLog(@"Receipt request done but there is no receipt. This is likely because the user canceled at the login screen");
             // This can happen if the user cancels the login screen for the store.
             // If we get here it means there is no receipt and an attempt to get it failed because the user cancelled the login.
-            FREDispatchStatusEventAsync(AirContext , (uint8_t*)"REFRESH_RECEIPT_ERROR", (uint8_t*)"receipt file not found." );
+            FREDispatchStatusEventAsync(AirContext , (uint8_t*)"REFRESH_RECEIPT_ERROR", (uint8_t*)"receipt file not found. This can happen if the user cancels the login screen for the store." );
         }
     }
 }
