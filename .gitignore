@@ -5,6 +5,7 @@ mobile-billing-ios/src/xcode/mobile-billing-ios.xcodeproj/xcuserdata/*
 mobile-billing-ios/src/xcode/mobile-billing-ios.xcodeproj/project.xcworkspace/*
 mobile-billing-ios/src/xcode/DerivedData/*
 mobile-billing-android/target/*
+mobile-billing-android/.idea/*
 testapp/target/*
 testapp/.gradle/*
 testapp/build/*
