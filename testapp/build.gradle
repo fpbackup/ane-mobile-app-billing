@@ -1,0 +1,96 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url repoManagerURL + 'repo'
+            credentials {
+                username = mavenUsername
+                password = mavenPassword
+            }
+        }
+    }
+
+    dependencies {
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.3.1-FP'
+    }
+}
+
+apply plugin: 'gradlefx'
+apply plugin: 'ideafx'
+
+type = 'mobile'
+version = '0.1'
+
+mainClass = 'Main.as'
+playerVersion = '19.0'
+output = 'TestApp'
+
+def compilerOptions = [
+    '-swf-version=30', // AIR 19
+    '-advanced-telemetry',
+    // AS3 metadata
+    '-keep-as3-metadata+=Inline,Embed,SWF,Transient',
+    // Robotlegs metadata
+    '-keep-as3-metadata+=Inject,PreDestroy,PostConstruct'
+]
+
+repositories {
+    mavenLocal()
+    maven {
+        url repoManagerURL + 'repo'
+        credentials {
+            username = mavenUsername
+            password = mavenPassword
+        }
+    }
+    ivy {
+        name 'Feathers SDK'
+        ivyPattern 'http://google.com/FIX_FOR_HTTP_403_ERROR/not_a_real_file.txt'
+        // not working directly from GitHub, its throwing strange errors
+        //artifactPattern 'https://github.com/BowlerHatLLC/[module]/releases/download/v2.2.0/feathers-sdk-[revision]-bin.[ext]'
+        artifactPattern 'https://s3-eu-west-1.amazonaws.com/s3.funkypandagame.com/clientRepo/[module]/[revision]/feathers-sdk-bin.[ext]'
+    }
+}
+
+dependencies {
+    flexSDK group: 'com.feathersui', name: 'feathers-sdk', version: '2.3.0', ext: Os.isFamily(Os.FAMILY_WINDOWS) ? 'zip' : 'tar.gz'
+    merged group: 'com.feathersui', name: 'MetalWorksMobileTheme', version: '2016-01-08', ext: 'swc'
+
+    merged group: 'com.funkypanda', name: 'mobile-billing', version: '2015-11-17', ext: 'ane'
+}
+
+additionalCompilerOptions = compilerOptions
+
+compileFlex.inputs.property('additionalCompilerOptions', additionalCompilerOptions);
+
+sdkAutoInstall {
+    showPrompts = false
+}
+
+airMobile {
+    platform = 'ios'
+    outputExtension = 'ipa'
+    target = 'ipa-ad-hoc'
+    provisioningProfile = 'certificates/development/development.mobileprovision';
+}
+
+air {
+    keystore = 'certificates/development/ios_development.p12';
+    storepass = '0';
+    applicationDescriptor = 'src/main/resources/application-descriptor.xml';
+    fileOptions = [
+        '-C','src/main/resources',
+        '.'
+    ]
+}
+
+///////////////////////////////////////// wrapper
+task wrapper(type: Wrapper) {
+    group = 'Buildmaster'
+    description = 'Generates gradlew and gradlew.bat bootstrap scripts.'
+    gradleVersion = '2.6'
+    // place jar file and properties into a subdirectory to avoid root dir clutter
+    jarFile = 'gradle/wrapper/gradle.jar'
+}

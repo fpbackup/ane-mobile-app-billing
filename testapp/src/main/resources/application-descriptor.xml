@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/19.0">
+
+    <id>com.funkypandagame.billingTest</id>
+    <filename>Billing Test</filename>
+    <name>Billing Test</name>
+    <versionNumber>999</versionNumber>
+
+    <initialWindow>
+        <content>TestApp.swf</content>
+        <visible>true</visible>
+        <aspectRatio>landscape</aspectRatio>
+        <autoOrients>true</autoOrients>
+        <fullScreen>true</fullScreen>
+        <renderMode>direct</renderMode>
+        <depthAndStencil>true</depthAndStencil>
+    </initialWindow>
+
+    <supportedLanguages>en</supportedLanguages>
+
+    <icon>
+        <image48x48>icons/icon_48.png</image48x48>
+        <image57x57>icons/icon_57.png</image57x57>
+        <image72x72>icons/icon_72.png</image72x72>
+        <image76x76>icons/icon_76.png</image76x76>
+        <image80x80>icons/icon_80.png</image80x80>
+        <image96x96>icons/icon_96.png</image96x96>
+        <image120x120>icons/icon_120.png</image120x120>
+        <image128x128>icons/icon_128.png</image128x128>
+        <image152x152>icons/icon_152.png</image152x152>
+        <image512x512>icons/icon_512.png</image512x512>
+        <image1024x1024>icons/icon_1024.png</image1024x1024>
+    </icon>
+
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+				<manifest android:installLocation="auto">
+                    <uses-permission android:name="android.permission.INTERNET" />
+
+                    <uses-permission android:name="com.android.vending.BILLING" />
+
+                    <application>
+                        <activity android:name="com.funkypanda.mobilebilling.activity.PurchaseActivity"
+                        android:label=""
+                        android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+                    </application>
+            </manifest>
+			]]>
+        </manifestAdditions>
+    </android>
+    <iPhone>
+        <InfoAdditions>
+            <![CDATA[
+				<key>UIDeviceFamily</key>
+				<array>
+					<string>1</string>
+					<string>2</string>
+				</array>
+
+                <key>MinimumOSVersion</key>
+                <string>7.0</string>
+		]]>
+        </InfoAdditions>
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+    </iPhone>
+
+    <extensions>
+        <extensionID>com.funkypanda.mobile-billing</extensionID>
+    </extensions>
+</application>

@@ -1,6 +1,18 @@
 package
 {
 
+    import com.funkypanda.mobilebilling.InAppPayments;
+    import com.funkypanda.mobilebilling.events.CanMakePurchaseEvent;
+    import com.funkypanda.mobilebilling.events.ConsumePurchaseErrorEvent;
+    import com.funkypanda.mobilebilling.events.ConsumePurchaseSuccessEvent;
+    import com.funkypanda.mobilebilling.events.GetProductInfoErrorEvent;
+    import com.funkypanda.mobilebilling.events.GetProductInfoSuccessEvent;
+    import com.funkypanda.mobilebilling.events.GetPurchasedItemsSuccessEvent;
+    import com.funkypanda.mobilebilling.events.MakePurchaseErrorEvent;
+    import com.funkypanda.mobilebilling.events.MakePurchaseSuccessEvent;
+    import com.funkypanda.mobilebilling.events.PurchaseDebugEvent;
+    import com.funkypanda.mobilebilling.models.Purchase;
+
     import feathers.controls.Button;
     import feathers.controls.ScrollContainer;
     import feathers.controls.ScrollText;
@@ -10,15 +22,15 @@ package
     import flash.events.UncaughtErrorEvent;
 
     import flash.text.TextFormat;
+import flash.utils.setTimeout;
 
-    import starling.core.Starling;
+import starling.core.Starling;
 
     import starling.display.Sprite;
     import starling.events.Event;
 
     public class TestApp extends Sprite
     {
-        // taken from rinoa client
         public static const GOOGLE_PLAY_PUBLIC_KEY : String = "TODO GET KEY";
 
         private var service : InAppPayments;
@@ -32,70 +44,6 @@ package
         public function TestApp()
         {
             addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-
-            service = InAppPayments.service;
-
-            // response to getProductsInfo
-            service.addEventListener(GetProductInfoSuccessEvent.GET_PRODUCT_INFO_SUCCESS, function (evt : GetProductInfoSuccessEvent) : void
-            {
-                log(evt.type + " " + evt.products);
-            });
-            service.addEventListener(GetProductInfoErrorEvent.GET_PRODUCT_INFO_ERROR, function (evt : GetProductInfoErrorEvent) : void
-            {
-                log(evt.type + " " + evt.message);
-            });
-
-            // response to makePurchase
-            service.addEventListener(MakePurchaseSuccessEvent.MAKE_PURCHASE_SUCCESS, function (evt : MakePurchaseSuccessEvent) : void
-            {
-                log("MAKE_PURCHASE_SUCCESS with " + evt.purchases.length + " items");
-                for each (var purchase : Purchase in evt.purchases)
-                {
-                    unconsumedPurchase = purchase;
-                    log(purchase.toString());
-                }
-            });
-            service.addEventListener(MakePurchaseErrorEvent.MAKE_PURCHASE_ERROR, function (evt : MakePurchaseErrorEvent) : void
-            {
-                log(evt.type + " " + evt.message + " CODE: " + evt.error);
-            });
-
-            // response to getPurchasedItems
-            service.addEventListener(GetPurchasedItemsSuccessEvent.GET_PURCHASED_ITEMS_SUCCESS, function (evt : GetPurchasedItemsSuccessEvent) : void
-            {
-                log("GET_PURCHASED_ITEMS_SUCCESS with " + evt.purchases.length + " items");
-                for each (var purchased : Purchase in evt.purchases)
-                {
-                    unconsumedPurchase = purchased;
-                    log(purchased.toString());
-                }
-            });
-            service.addEventListener(GetPurchasedItemsErrorEvent.GET_PURCHASED_ITEMS_ERROR, function (evt : GetPurchasedItemsErrorEvent) : void
-            {
-                log(evt.type + " " + evt.message);
-            });
-
-            // response to consumePurchase
-            service.addEventListener(ConsumePurchaseSuccessEvent.CONSUME_PURCHASE_SUCCESS, function (evt : ConsumePurchaseSuccessEvent) : void
-            {
-                log(evt.type + " " + evt.message);
-            });
-            service.addEventListener(ConsumePurchaseErrorEvent.CONSUME_PURCHASE_ERROR, function (evt : ConsumePurchaseErrorEvent) : void
-            {
-                log(evt.type + " " + evt.message);
-            });
-
-            // response to canMakePurchase
-            service.addEventListener(CanMakePurchaseEvent.CAN_MAKE_PURCHASE, function (evt : CanMakePurchaseEvent) : void
-            {
-                log(evt.type + " " + evt.canMakePurchase);
-            });
-
-            // debug - can be fired anytime
-            service.addEventListener(PurchaseDebugEvent.DEBUG, function (evt : PurchaseDebugEvent) : void
-            {
-                log(evt.type + " " + evt.message);
-            });
         }
 
         protected function addedToStageHandler(event : Event) : void
@@ -229,7 +177,7 @@ package
             {
                 if (unconsumedPurchase != null)
                 {
-                    service.consumePurchase(unconsumedPurchase.transactionReceipt);
+                    service.consumePurchase(unconsumedPurchase.receipt);
                 }
                 else
                 {
@@ -257,6 +205,68 @@ package
             addChild(logTF);
 
             log("Testing application for the payments ANE. It uses the rinoa client credentials.");
+
+            try {
+                service = InAppPayments.service;
+            }
+            catch (err : Error)
+            {
+                log(err + "\n" + err.getStackTrace());
+                return;
+            }
+
+            // response to getProductsInfo
+            service.addEventListener(GetProductInfoSuccessEvent.GET_PRODUCT_INFO_SUCCESS, function (evt : GetProductInfoSuccessEvent) : void
+            {
+                log(evt.type + " " + evt.products);
+            });
+            service.addEventListener(GetProductInfoErrorEvent.GET_PRODUCT_INFO_ERROR, function (evt : GetProductInfoErrorEvent) : void
+            {
+                log(evt.type + " " + evt.message);
+            });
+
+            // response to makePurchase
+            service.addEventListener(MakePurchaseSuccessEvent.MAKE_PURCHASE_SUCCESS, function (evt : MakePurchaseSuccessEvent) : void
+            {
+                log("MAKE_PURCHASE_SUCCESS with " + evt.purchases.length + " items");
+                for each (var purchase : Purchase in evt.purchases)
+                {
+                    unconsumedPurchase = purchase;
+                    log(purchase.toString());
+                }
+            });
+            service.addEventListener(MakePurchaseErrorEvent.MAKE_PURCHASE_ERROR, function (evt : MakePurchaseErrorEvent) : void
+            {
+                log(evt.type + " " + evt.message + " CODE: " + evt.error);
+            });
+
+            // response to getPurchasedItems
+            service.addEventListener(GetPurchasedItemsSuccessEvent.GET_PURCHASED_ITEMS_SUCCESS, function (evt : GetPurchasedItemsSuccessEvent) : void
+            {
+                log("GET_PURCHASED_ITEMS_SUCCESS, receipt: " + evt.purchaseReceipts);
+            });
+
+            // response to consumePurchase
+            service.addEventListener(ConsumePurchaseSuccessEvent.CONSUME_PURCHASE_SUCCESS, function (evt : ConsumePurchaseSuccessEvent) : void
+            {
+                log(evt.type + " " + evt.message);
+            });
+            service.addEventListener(ConsumePurchaseErrorEvent.CONSUME_PURCHASE_ERROR, function (evt : ConsumePurchaseErrorEvent) : void
+            {
+                log(evt.type + " " + evt.message);
+            });
+
+            // response to canMakePurchase
+            service.addEventListener(CanMakePurchaseEvent.CAN_MAKE_PURCHASE, function (evt : CanMakePurchaseEvent) : void
+            {
+                log(evt.type + " " + evt.canMakePurchase);
+            });
+
+            // debug - can be fired anytime
+            service.addEventListener(PurchaseDebugEvent.DEBUG, function (evt : PurchaseDebugEvent) : void
+            {
+                log(evt.type + " " + evt.message);
+            });
         }
 
         private function log(str : String) : void
