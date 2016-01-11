@@ -3,8 +3,8 @@
   package="com.funkypanda" android:versionCode="1" android:versionName="1.0.1">
 
     <uses-sdk
-            android:minSdkVersion="10"
-            android:targetSdkVersion="10" />
+            android:minSdkVersion="15"
+            android:targetSdkVersion="15" />
 
 </manifest>
 

@@ -22,9 +22,8 @@ package
     import flash.events.UncaughtErrorEvent;
 
     import flash.text.TextFormat;
-import flash.utils.setTimeout;
 
-import starling.core.Starling;
+    import starling.core.Starling;
 
     import starling.display.Sprite;
     import starling.events.Event;
@@ -85,7 +84,7 @@ import starling.core.Starling;
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["at_gp_pro_5_199_a", "at_gp_reg_3_1499", "at_gp_pro_up_5_199"]);
+                service.getProductInfo(["item_1_Android", "item_2_Android", "item_3_Android"]);
             });
             button.label = "getProductsInfo android";
             button.validate();
@@ -94,7 +93,7 @@ import starling.core.Starling;
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["at_gp_sweep_999_1800k", "BAD_ID", "at_gp_reg_2_499"]);
+                service.getProductInfo(["item_1_Android", "BAD_ID", "item_2_Android"]);
             });
             button.label = "getProductsInfo android 1 wrong ID";
             button.validate();
@@ -103,7 +102,7 @@ import starling.core.Starling;
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["general_150000_299_ipad", "general_900000_899_ipad", "general_2700000_1799_ipad"]);
+                service.getProductInfo(["item_1_iOS", "item_2_iOS", "item_3_iOS"]);
             });
             button.label = "getProductsInfo iOS";
             button.validate();
@@ -112,7 +111,7 @@ import starling.core.Starling;
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["general_150000_299_ipad", "BAD_ID", "general_2700000_1799_ipad"]);
+                service.getProductInfo(["item_1_iOS", "BAD_ID", "item_2_iOS"]);
             });
             button.label = "getProductsInfo iOS 1 wrong ID";
             button.validate();
@@ -121,7 +120,7 @@ import starling.core.Starling;
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["wrong_id", "BAD_ID"]);
+                service.getProductInfo(["wrong_id", "another_wrong_ID"]);
             });
             button.label = "getProductsInfo all wrong ID";
             button.validate();

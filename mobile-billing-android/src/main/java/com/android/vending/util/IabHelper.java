@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.funkypanda.mobilebilling.Extension;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -195,7 +196,7 @@ public class IabHelper {
          *
          * @param result The result of the setup process.
          */
-        public void onIabSetupFinished(IabResult result);
+        void onIabSetupFinished(IabResult result);
     }
 
     /**
@@ -326,7 +327,7 @@ public class IabHelper {
          * @param result The result of the purchase.
          * @param info The purchase information (null if purchase failed)
          */
-        public void onIabPurchaseFinished(IabResult result, Purchase info);
+        void onIabPurchaseFinished(IabResult result, Purchase info);
     }
 
     // The listener registered on launchPurchaseFlow, which we have to call back when
@@ -635,7 +636,7 @@ public class IabHelper {
          * @param result The result of the operation.
          * @param inv The inventory.
          */
-        public void onQueryInventoryFinished(IabResult result, Inventory inv);
+        void onQueryInventoryFinished(IabResult result, Inventory inv);
     }
 
     /**
@@ -706,7 +707,7 @@ public class IabHelper {
          *
          * @param result The result of the consumption operation.
          */
-        public void onConsumeFinished(IabResult result);
+        void onConsumeFinished(IabResult result);
     }
 
     /**
@@ -905,14 +906,19 @@ public class IabHelper {
     }
 
     void logDebug(String msg) {
-        if (mDebugLog) Log.d(mDebugTag, msg);
+        if (mDebugLog) {
+            Log.d(mDebugTag, msg);
+            Extension.log(msg);
+        }
     }
 
     void logError(String msg) {
         Log.e(mDebugTag, "In-app billing error: " + msg);
+        Extension.log("In-app billing error: " + msg);
     }
 
     void logWarn(String msg) {
         Log.w(mDebugTag, "In-app billing warning: " + msg);
+        Extension.log("In-app billing warning: " + msg);
     }
 }

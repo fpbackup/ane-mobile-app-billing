@@ -21,7 +21,7 @@ public class BillingSetupCommand implements IabHelper.OnIabSetupFinishedListener
 
         if (ANEUtils.iabHelper == null)
         {
-            Extension.log("Initializing IAB Helper with Key: " + Extension.base64EncodedKey);
+            Extension.log("Initializing billing helper with Key: " + Extension.base64EncodedKey);
             try
             {
                 ANEUtils.iabHelper = new IabHelper(Extension.getActivity(), Extension.base64EncodedKey);
@@ -30,6 +30,7 @@ public class BillingSetupCommand implements IabHelper.OnIabSetupFinishedListener
             }
             catch (Exception ex)
             {
+                Extension.log("Failed to setup the app billing library " + ex.toString());
                 _listener.onInitError("Failed to setup the app billing library " + ex.toString());
             }
         }

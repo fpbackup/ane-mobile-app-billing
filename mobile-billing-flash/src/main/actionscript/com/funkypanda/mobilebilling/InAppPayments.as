@@ -51,9 +51,9 @@ import com.funkypanda.mobilebilling.models.Product;
                     _extContext = ExtensionContext.createExtensionContext(EXT_CONTEXT_ID, null);
                     _extContext.addEventListener(StatusEvent.STATUS, extension_statusHandler);
                 }
-                catch (e : Error)
+                catch (err : Error)
                 {
-                    throw new Error("The native extension context could not be created " + e);
+                    throw new Error("The native extension context could not be created " + err);
                 }
                 return;
             }

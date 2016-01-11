@@ -16,7 +16,7 @@
 
     <modules>
         <module>mobile-billing-flash</module>
-        <!--<module>mobile-billing-android</module>-->
+        <module>mobile-billing-android</module>
         <module>mobile-billing-ios</module>
         <module>mobile-billing-ane</module>
     </modules>

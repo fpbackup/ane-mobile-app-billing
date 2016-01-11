@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform.version>4.0.3</platform.version>
-        <android.plugin.version>4.0.0-rc.1</android.plugin.version>
+        <android.plugin.version>4.0.0-rc.2</android.plugin.version>
         <android.sdk.path>C:\PROGRAMS\AndroidSDK</android.sdk.path>
     </properties>
 
@@ -28,11 +28,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- This was taken from Air SDK 14.0 -->
+        <!-- This was taken from the AIR SDK -->
         <dependency>
             <groupId>com.adobe</groupId>
             <artifactId>FlashRuntimeExtensions</artifactId>
-            <version>19.0</version>
+            <version>${air.version}</version>
         </dependency>
 
     </dependencies>

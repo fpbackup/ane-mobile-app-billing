@@ -19,7 +19,7 @@
         </platform>
         <platform name="Android-ARM">
             <applicationDeployment>
-                <nativeLibrary>libInAppPurchase-Android.jar</nativeLibrary>
+                <nativeLibrary>lib-billing-android.jar</nativeLibrary>
                 <initializer>com.funkypanda.mobilebilling.Extension</initializer>
             </applicationDeployment>
         </platform>
