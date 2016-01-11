@@ -30,7 +30,13 @@ package
 
     public class TestApp extends Sprite
     {
-        public static const GOOGLE_PLAY_PUBLIC_KEY : String = "TODO GET KEY";
+        public static const GOOGLE_PLAY_PUBLIC_KEY : String = "TODO REPLACE";
+        public static const ANDROID_SHOP_ITEM1 : String = "TODO REPLACE";
+        public static const ANDROID_SHOP_ITEM2 : String = "TODO REPLACE";
+        public static const ANDROID_SHOP_ITEM3 : String = "TODO REPLACE";
+        public static const IOS_SHOP_ITEM1 : String = "TODO REPLACE";
+        public static const IOS_SHOP_ITEM2 : String = "TODO REPLACE";
+        public static const IOS_SHOP_ITEM3 : String = "TODO REPLACE";
 
         private var service : InAppPayments;
 
@@ -84,7 +90,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["item_1_Android", "item_2_Android", "item_3_Android"]);
+                service.getProductInfo([ANDROID_SHOP_ITEM1, ANDROID_SHOP_ITEM2, ANDROID_SHOP_ITEM3]);
             });
             button.label = "getProductsInfo android";
             button.validate();
@@ -93,7 +99,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["item_1_Android", "BAD_ID", "item_2_Android"]);
+                service.getProductInfo([ANDROID_SHOP_ITEM1, "BAD_ID", ANDROID_SHOP_ITEM2]);
             });
             button.label = "getProductsInfo android 1 wrong ID";
             button.validate();
@@ -102,7 +108,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["item_1_iOS", "item_2_iOS", "item_3_iOS"]);
+                service.getProductInfo([IOS_SHOP_ITEM1, IOS_SHOP_ITEM2, IOS_SHOP_ITEM3]);
             });
             button.label = "getProductsInfo iOS";
             button.validate();
@@ -111,7 +117,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo(["item_1_iOS", "BAD_ID", "item_2_iOS"]);
+                service.getProductInfo([IOS_SHOP_ITEM1, "BAD_ID", IOS_SHOP_ITEM2]);
             });
             button.label = "getProductsInfo iOS 1 wrong ID";
             button.validate();
@@ -138,7 +144,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.makePurchase("general_150000_299_ipad");
+                service.makePurchase(IOS_SHOP_ITEM1);
             });
             button.label = "makePurchase good ID iOS";
             button.validate();
@@ -147,7 +153,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.makePurchase("at_gp_reg_2_499");
+                service.makePurchase(ANDROID_SHOP_ITEM1);
             });
             button.label = "makePurchase good ID android";
             button.validate();
