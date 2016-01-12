@@ -10,9 +10,9 @@ package com.funkypanda.mobilebilling
     import com.funkypanda.mobilebilling.events.GetProductInfoErrorEvent;
     import com.funkypanda.mobilebilling.events.GetProductInfoSuccessEvent;
     import com.funkypanda.mobilebilling.events.MakePurchaseSuccessEvent;
-import com.funkypanda.mobilebilling.events.RefreshReceiptErrorEvent;
-import com.funkypanda.mobilebilling.events.RefreshReceiptSuccessEvent;
-import com.funkypanda.mobilebilling.models.Product;
+    import com.funkypanda.mobilebilling.events.RefreshReceiptErrorEvent;
+    import com.funkypanda.mobilebilling.events.RefreshReceiptSuccessEvent;
+    import com.funkypanda.mobilebilling.models.Product;
     import com.funkypanda.mobilebilling.models.Purchase;
     import com.funkypanda.mobilebilling.models.MakePurchaseError;
 
@@ -158,8 +158,9 @@ import com.funkypanda.mobilebilling.models.Product;
             }
         }
 
-        /** Returns receipts for items that have been purchased, but not consumed. (this is called by Apple restoring purchaseReceipts)
+        /** Returns receipts for items that have been purchased, but not consumed.
          *  You should call this on every app startup to ensure that the user's inventory is in sync.
+         *  Note that the reply object differs in iOS and Android!
          *  Events dispatched as reply:
          *  GetPurchasedItemsSuccessEvent
          **/
@@ -169,12 +170,16 @@ import com.funkypanda.mobilebilling.models.Product;
         }
 
         /** Refreshes the receipt on the disk.
+         *  iOS only!
          *  Events dispatched as reply:
          *  RefreshReceiptSuccessEvent, RefreshReceiptErrorEvent
          **/
         public function refreshReceipt() : void
         {
-            _extContext.call("refreshReceipt");
+            if (isiOS)
+            {
+                _extContext.call("refreshReceipt");
+            }
         }
 
         /** Call this if you do not plan to use the extension anymore. (should not happen) */
@@ -204,7 +209,22 @@ import com.funkypanda.mobilebilling.models.Product;
                     break;
                 // getPurchasedItems() replies
                 case GetPurchasedItemsSuccessEvent.GET_PURCHASED_ITEMS_SUCCESS:
-                    dispatchEvent(new GetPurchasedItemsSuccessEvent(event.level));
+                    var getPurchasedItemsSuccess : GetPurchasedItemsSuccessEvent = new GetPurchasedItemsSuccessEvent();
+                    if (isiOS)
+                    {
+                        getPurchasedItemsSuccess.purchaseReceiptsIOS = event.level;
+                    }
+                    else if (isAndroid)
+                    {
+                        const getPurchaseResult : Object = JSON.parse(event.level);
+                        const pArray : Vector.<Purchase> = new Vector.<Purchase>();
+                        for each (var pObject : Object in getPurchaseResult)
+                        {
+                            pArray.push(createPurchase(pObject));
+                        }
+                        getPurchasedItemsSuccess.purchasesAndroid = pArray;
+                    }
+                    dispatchEvent(getPurchasedItemsSuccess);
                     break;
                 // getCanMakeAPurchase() replies
                 case CanMakePurchaseEvent.CAN_MAKE_PURCHASE:

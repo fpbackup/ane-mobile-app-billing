@@ -58,8 +58,8 @@ public class MakePurchaseFunction implements FREFunction
         try
         {
             JSONObject resultObject = new JSONObject();
-            resultObject.put("error", errorCode.toString());
-            resultObject.put("message", message);
+            resultObject.put("error", FlashConstants.MakePurchaseError.PURCHASE_ERROR_OTHER);
+            resultObject.put("message", "errorCode:" + errorCode.toString() + " "+ message);
             Extension.dispatchStatusEventAsync(FlashConstants.MAKE_PURCHASE_ERROR, resultObject.toString());
         }
         catch (Exception ex)

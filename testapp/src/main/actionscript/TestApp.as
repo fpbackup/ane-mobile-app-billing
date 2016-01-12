@@ -20,6 +20,7 @@ package
     import feathers.themes.MetalWorksMobileTheme;
 
     import flash.events.UncaughtErrorEvent;
+    import flash.system.Capabilities;
 
     import flash.text.TextFormat;
 
@@ -30,21 +31,14 @@ package
 
     public class TestApp extends Sprite
     {
-        public static const GOOGLE_PLAY_PUBLIC_KEY : String = "TODO REPLACE";
-        public static const ANDROID_SHOP_ITEM1 : String = "TODO REPLACE";
-        public static const ANDROID_SHOP_ITEM2 : String = "TODO REPLACE";
-        public static const ANDROID_SHOP_ITEM3 : String = "TODO REPLACE";
-        public static const IOS_SHOP_ITEM1 : String = "TODO REPLACE";
-        public static const IOS_SHOP_ITEM2 : String = "TODO REPLACE";
-        public static const IOS_SHOP_ITEM3 : String = "TODO REPLACE";
 
         private var service : InAppPayments;
 
         private var logTF : ScrollText;
-        private static const TOP : uint = 445;
+        private static const TOP : uint = 405;
         private const container: ScrollContainer = new ScrollContainer();
 
-        private var unconsumedPurchase : Purchase;
+        private var unconsumedPurchaseReceipt : String;
 
         public function TestApp()
         {
@@ -81,7 +75,7 @@ package
             var button : Button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.setAndroidKey(GOOGLE_PLAY_PUBLIC_KEY);
+                service.setAndroidKey(Constants.GOOGLE_PLAY_PUBLIC_KEY);
             });
             button.label = "setAndroidKey";
             button.validate();
@@ -90,7 +84,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo([ANDROID_SHOP_ITEM1, ANDROID_SHOP_ITEM2, ANDROID_SHOP_ITEM3]);
+                service.getProductInfo([Constants.ANDROID_SHOP_ITEM1, Constants.ANDROID_SHOP_ITEM2, Constants.ANDROID_SHOP_ITEM3]);
             });
             button.label = "getProductsInfo android";
             button.validate();
@@ -99,7 +93,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo([ANDROID_SHOP_ITEM1, "BAD_ID", ANDROID_SHOP_ITEM2]);
+                service.getProductInfo([Constants.ANDROID_SHOP_ITEM1, "BAD_ID", Constants.ANDROID_SHOP_ITEM2]);
             });
             button.label = "getProductsInfo android 1 wrong ID";
             button.validate();
@@ -108,7 +102,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo([IOS_SHOP_ITEM1, IOS_SHOP_ITEM2, IOS_SHOP_ITEM3]);
+                service.getProductInfo([Constants.IOS_SHOP_ITEM1, Constants.IOS_SHOP_ITEM2, Constants.IOS_SHOP_ITEM3]);
             });
             button.label = "getProductsInfo iOS";
             button.validate();
@@ -117,7 +111,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.getProductInfo([IOS_SHOP_ITEM1, "BAD_ID", IOS_SHOP_ITEM2]);
+                service.getProductInfo([Constants.IOS_SHOP_ITEM1, "BAD_ID", Constants.IOS_SHOP_ITEM2]);
             });
             button.label = "getProductsInfo iOS 1 wrong ID";
             button.validate();
@@ -144,7 +138,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.makePurchase(IOS_SHOP_ITEM1);
+                service.makePurchase(Constants.IOS_SHOP_ITEM1);
             });
             button.label = "makePurchase good ID iOS";
             button.validate();
@@ -153,7 +147,7 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                service.makePurchase(ANDROID_SHOP_ITEM1);
+                service.makePurchase(Constants.ANDROID_SHOP_ITEM1);
             });
             button.label = "makePurchase good ID android";
             button.validate();
@@ -180,9 +174,9 @@ package
             button = new Button();
             button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
             {
-                if (unconsumedPurchase != null)
+                if (unconsumedPurchaseReceipt != null)
                 {
-                    service.consumePurchase(unconsumedPurchase.receipt);
+                    service.consumePurchase(unconsumedPurchaseReceipt);
                 }
                 else
                 {
@@ -190,6 +184,15 @@ package
                 }
             });
             button.label = "consume 1 pending";
+            button.validate();
+            container.addChild(button);
+
+            button = new Button();
+            button.addEventListener(Event.TRIGGERED, function (evt : Event) : void
+            {
+                service.consumePurchase("this_is_a_bad_receipt");
+            });
+            button.label = "consume wrong ID";
             button.validate();
             container.addChild(button);
 
@@ -209,7 +212,7 @@ package
             logTF.textFormat = new TextFormat(null, 22, 0xdedede);
             addChild(logTF);
 
-            log("Testing application for the payments ANE. It uses the rinoa client credentials.");
+            log("Testing application for the payments ANE.");
 
             try {
                 service = InAppPayments.service;
@@ -236,7 +239,7 @@ package
                 log("MAKE_PURCHASE_SUCCESS with " + evt.purchases.length + " items");
                 for each (var purchase : Purchase in evt.purchases)
                 {
-                    unconsumedPurchase = purchase;
+                    unconsumedPurchaseReceipt = purchase.receipt;
                     log(purchase.toString());
                 }
             });
@@ -248,7 +251,21 @@ package
             // response to getPurchasedItems
             service.addEventListener(GetPurchasedItemsSuccessEvent.GET_PURCHASED_ITEMS_SUCCESS, function (evt : GetPurchasedItemsSuccessEvent) : void
             {
-                log("GET_PURCHASED_ITEMS_SUCCESS, receipt: " + evt.purchaseReceipts);
+                unconsumedPurchaseReceipt = null;
+                if (isiOS)
+                {
+                    log("GET_PURCHASED_ITEMS_SUCCESS receipt: " + evt.purchaseReceiptsIOS);
+                    unconsumedPurchaseReceipt = evt.purchaseReceiptsIOS;
+                }
+                else if (isAndroid)
+                {
+                    log("GET_PURCHASED_ITEMS_SUCCESS with " + evt.purchasesAndroid.length + " items.");
+                    for each (var purchase : Purchase in evt.purchasesAndroid)
+                    {
+                        unconsumedPurchaseReceipt = purchase.receipt;
+                        log(purchase.toString());
+                    }
+                }
             });
 
             // response to consumePurchase
@@ -280,5 +297,14 @@ package
             trace(str);
         }
 
+        private static function get isAndroid() : Boolean
+        {
+            return (Capabilities.manufacturer.indexOf("Android") > -1);
+        }
+
+        private static function get isiOS() : Boolean
+        {
+            return (Capabilities.manufacturer.indexOf("iOS") > -1);
+        }
     }
 }

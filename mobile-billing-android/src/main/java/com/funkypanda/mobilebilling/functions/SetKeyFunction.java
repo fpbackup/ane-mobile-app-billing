@@ -12,6 +12,7 @@ public class SetKeyFunction implements FREFunction
     public FREObject call(FREContext context, FREObject[] args)
     {
         Extension.base64EncodedKey = ANEUtils.getStringFromFREObject(args[0]);
+        Extension.log("Setting Application public key");
         return null;
     }
 

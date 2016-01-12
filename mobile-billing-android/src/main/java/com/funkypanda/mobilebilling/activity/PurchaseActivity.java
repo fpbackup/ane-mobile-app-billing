@@ -77,7 +77,6 @@ public class PurchaseActivity extends Activity implements IabHelper.OnIabPurchas
         {
             try
             {
-                Parsers.purchaseToJSON(purchase);
                 JSONObject resultObject = Parsers.purchaseToJSON(purchase);
                 Extension.dispatchStatusEventAsync(FlashConstants.MAKE_PURCHASE_SUCCESS, "[" + resultObject.toString() + "]");
             }

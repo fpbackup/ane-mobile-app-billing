@@ -14,7 +14,7 @@ public class BillingSetupCommand implements IabHelper.OnIabSetupFinishedListener
     {
         if (Extension.base64EncodedKey == null)
         {
-            _listener.onInitError("Google API key must be set before making queries to the Google app store");
+            listener.onInitError("Google API key must be set before making queries to the Google app store");
             return;
         }
         _listener = listener;
