@@ -25,7 +25,7 @@ public class BillingSetupCommand implements IabHelper.OnIabSetupFinishedListener
             try
             {
                 ANEUtils.iabHelper = new IabHelper(Extension.getActivity(), Extension.base64EncodedKey);
-                ANEUtils.iabHelper.enableDebugLogging(true);
+                ANEUtils.iabHelper.enableDebugLogging(true, Extension.TAG);
                 ANEUtils.iabHelper.startSetup(this);
             }
             catch (Exception ex)

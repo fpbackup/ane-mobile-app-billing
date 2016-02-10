@@ -289,7 +289,7 @@ package com.funkypanda.mobilebilling
         private function createPurchase(purchaseObject : Object) : Purchase
         {
             const purchase : Purchase = new Purchase();
-            purchase.rawData = purchaseObject;
+            purchase.rawData = purchaseObject.rawData;
             purchase.productId = purchaseObject.productId;
             purchase.quantity = purchaseObject.quantity;
             const date : Date = new Date();

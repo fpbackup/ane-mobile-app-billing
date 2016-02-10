@@ -181,11 +181,6 @@ public class IabHelper {
         mDebugTag = tag;
     }
 
-    public void enableDebugLogging(boolean enable) {
-        checkNotDisposed();
-        mDebugLog = enable;
-    }
-
     /**
      * Callback for setup process. This listener's {@link #onIabSetupFinished} method is called
      * when the setup process is complete.
@@ -232,8 +227,9 @@ public class IabHelper {
                     // check for in-app billing v3 support
                     int response = mService.isBillingSupported(3, packageName, ITEM_TYPE_INAPP);
                     if (response != BILLING_RESPONSE_RESULT_OK) {
-                        if (listener != null) listener.onIabSetupFinished(new IabResult(response,
-                                "Error checking for billing v3 support."));
+                        if (listener != null) {
+                            listener.onIabSetupFinished(new IabResult(response, "Error checking for billing v3 support."));
+                        }
 
                         // if in-app purchases aren't supported, neither are subscriptions.
                         mSubscriptionsSupported = false;
@@ -278,8 +274,7 @@ public class IabHelper {
             // no service available to handle that Intent
             if (listener != null) {
                 listener.onIabSetupFinished(
-                        new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
-                        "Billing service unavailable on device."));
+                        new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE, "Billing service unavailable on device."));
             }
         }
     }
@@ -304,7 +299,9 @@ public class IabHelper {
     }
 
     private void checkNotDisposed() {
-        if (mDisposed) throw new IllegalStateException("IabHelper was disposed of, so it cannot be used.");
+        if (mDisposed) {
+            throw new IllegalStateException("IabHelper was disposed of, so it cannot be used.");
+        }
     }
 
     /** Returns whether subscriptions are supported. */
@@ -907,18 +904,15 @@ public class IabHelper {
 
     void logDebug(String msg) {
         if (mDebugLog) {
-            Log.d(mDebugTag, msg);
             Extension.log(msg);
         }
     }
 
     void logError(String msg) {
-        Log.e(mDebugTag, "In-app billing error: " + msg);
         Extension.log("In-app billing error: " + msg);
     }
 
     void logWarn(String msg) {
-        Log.w(mDebugTag, "In-app billing warning: " + msg);
         Extension.log("In-app billing warning: " + msg);
     }
 }

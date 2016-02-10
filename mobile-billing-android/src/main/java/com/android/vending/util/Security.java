@@ -16,11 +16,8 @@
 package com.android.vending.util;
 
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -49,19 +46,17 @@ public class Security {
     /**
      * Verifies that the data was signed with the given signature, and returns
      * the verified purchase. The data is in JSON format and signed
-     * with a private base64EncodedKey. The data also contains the {@link PurchaseState}
+     * with a private base64EncodedKey. The data also contains the PurchaseState
      * and product ID of the purchase.
      * @param base64PublicKey the base64-encoded public base64EncodedKey to use for verifying.
      * @param signedData the signed JSON string (signed, not encrypted)
      * @param signature the signature for the data, signed with the private base64EncodedKey
      */
     public static boolean verifyPurchase(String base64PublicKey, String signedData, String signature) {
-        if (TextUtils.isEmpty(signedData) || TextUtils.isEmpty(base64PublicKey) ||
-                TextUtils.isEmpty(signature)) {
+        if (TextUtils.isEmpty(signedData) || TextUtils.isEmpty(base64PublicKey) || TextUtils.isEmpty(signature)) {
             Log.e(TAG, "Purchase verification failed: missing data.");
             return false;
         }
-
         PublicKey key = Security.generatePublicKey(base64PublicKey);
         return Security.verify(key, signedData, signature);
     }
@@ -73,18 +68,15 @@ public class Security {
      * @param encodedPublicKey Base64-encoded public base64EncodedKey
      * @throws IllegalArgumentException if encodedPublicKey is invalid
      */
-    public static PublicKey generatePublicKey(String encodedPublicKey) {
+    private static PublicKey generatePublicKey(String encodedPublicKey) {
         try {
-            byte[] decodedKey = Base64.decode(encodedPublicKey);
+            byte[] decodedKey = Base64.decode(encodedPublicKey, Base64.DEFAULT);
             KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
             return keyFactory.generatePublic(new X509EncodedKeySpec(decodedKey));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (InvalidKeySpecException e) {
             Log.e(TAG, "Invalid base64EncodedKey specification.");
-            throw new IllegalArgumentException(e);
-        } catch (Base64DecoderException e) {
-            Log.e(TAG, "Base64 decoding failed.");
             throw new IllegalArgumentException(e);
         }
     }
@@ -98,13 +90,13 @@ public class Security {
      * @param signature server signature
      * @return true if the data and signature match
      */
-    public static boolean verify(PublicKey publicKey, String signedData, String signature) {
+    private static boolean verify(PublicKey publicKey, String signedData, String signature) {
         Signature sig;
         try {
             sig = Signature.getInstance(SIGNATURE_ALGORITHM);
             sig.initVerify(publicKey);
             sig.update(signedData.getBytes());
-            if (!sig.verify(Base64.decode(signature))) {
+            if (!sig.verify(Base64.decode(signature, Base64.DEFAULT))) {
                 Log.e(TAG, "Signature verification failed.");
                 return false;
             }
@@ -115,8 +107,6 @@ public class Security {
             Log.e(TAG, "Invalid base64EncodedKey specification.");
         } catch (SignatureException e) {
             Log.e(TAG, "Signature exception.");
-        } catch (Base64DecoderException e) {
-            Log.e(TAG, "Base64 decoding failed.");
         }
         return false;
     }

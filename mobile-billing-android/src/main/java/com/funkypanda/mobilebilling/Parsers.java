@@ -35,7 +35,7 @@ public class Parsers {
         resultObject.put("transactionDate", Long.toString(purchase.getPurchaseTime()));
         resultObject.put("transactionId", purchase.getOrderId());
         resultObject.put("receipt", purchase.getToken());
-        resultObject.put("rawData", purchase.toString());
+        resultObject.put("rawData", purchase.getOriginalJson());
         return resultObject;
     }
 

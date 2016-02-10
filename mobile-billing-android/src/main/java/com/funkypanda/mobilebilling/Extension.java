@@ -7,7 +7,7 @@ import com.adobe.fre.FREExtension;
 
 public class Extension implements FREExtension
 {
-    private static final String TAG = "AirInAppBilling";
+    public static final String TAG = "AirInAppBilling";
 
     private static ExtensionContext context;
 
