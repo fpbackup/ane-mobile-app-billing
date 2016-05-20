@@ -12,8 +12,8 @@ How to use
 
 First Add the native extension to your project:
 
-Add mobile-billing-ane/target/mobile-billing.ane as a dependency
-Edit your project's application descriptor and add the following under the `<extensions>` node:     
+Add `mobile-billing-ane/target/mobile-billing.ane` as a dependency to your app.    
+In your project's application descriptor add the following under the `<extensions>` node:     
 
 
     <extensionID>com.funkypanda.mobile-billing</extensionID>
@@ -49,11 +49,11 @@ For a complete working application check out the `testapp` folder.
 How to test payments working with the testing application
 ----
 
-First set up the application in the Google/Apple developer console. Define here some purchases too.
+First set up your application in the Google/Apple developer console. Define here some purchases too.    
 
-Then edit `testapp/src/main/actionscript/Constants.as`, add here your your application's public key, encoded in base64 if you are testing Android and add the dhop item IDs that you defined in the Google Play/Apple console.  
+Then edit `testapp/src/main/actionscript/Constants.as`, add here your your application's public key (encoded in base64) if you are testing Android and add the product IDs that you defined in the Google Play/Apple console.  
 
-Finally compile the test application with the same keystore/credentials as you app. Also set the same package name in the app descriptor.   
+Finally compile the test application with the same keystore/mobileProvision file as you app. Also set the same package name in the app descriptor.   
 
 
 
