@@ -7,16 +7,9 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <!-- this is needed so the versions plugin can push changes -->
-    <scm>
-        <connection>scm:git:https://github.com/funkypandagame/ane-mobile-app-billing.git</connection>
-        <developerConnection>scm:git:https://github.com/funkypandagame/ane-mobile-app-billing.git</developerConnection>
-        <url>https://github.com/funkypandagame/ane-mobile-app-billing.git</url>
-    </scm>
-
     <modules>
         <module>mobile-billing-flash</module>
-        <!--<module>mobile-billing-android</module>-->
+        <module>mobile-billing-android</module>
         <module>mobile-billing-ios</module>
         <module>mobile-billing-ane</module>
     </modules>

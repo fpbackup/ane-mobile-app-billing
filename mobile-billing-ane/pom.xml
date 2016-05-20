@@ -147,32 +147,6 @@
                 </executions>
             </plugin>
 
-            <!-- install the .ane manually to Artifactory -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>${project.artifactId}</artifactId>
-                    <version>${project.version}</version>
-                    <packaging>ane</packaging>
-                    <file>${basedir}/target/mobile-billing.ane</file>
-                    <generatePom>true</generatePom>
-                    <repositoryId>libs-release-local</repositoryId>
-                    <url>http://artifactory.funkypandagame.com:8081/artifactory/funkypanda</url>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>deploy-ane</id>
-                        <goals>
-                            <goal>deploy-file</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
